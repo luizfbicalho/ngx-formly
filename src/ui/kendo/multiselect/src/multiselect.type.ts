@@ -1,41 +1,44 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { Component, ChangeDetectionStrategy, Type } from '@angular/core';
+import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { FieldType, FormlyFieldProps } from '@ngx-formly/kendo/form-field';
+import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
+
+interface MultiSelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
+  primitive?: boolean;
+  filterable: boolean;
+  minFilter: number;
+  filterOperator: string;
+  filter: (field: string, operator: string, value: any) => void;
+}
+
+export interface FormlySelectFieldConfig extends FormlyFieldConfig<MultiSelectProps> {
+  type: 'multiselect' | Type<FormlyFieldMultiSelect>;
+}
 
 @Component({
   selector: 'formly-field-kendo-multiselect',
   template: `
     <kendo-multiselect
-      [class.k-state-invalid]="showError"
       [formControl]="formControl"
       [formlyAttributes]="field"
-      [data]="props.options | formlySelectOptions | async"
-      [textField]="props.textField"
-      [valueField]="props.valueField"
-      [valuePrimitive]="props.primitive"
+      [data]="props.options | formlySelectOptions : field | async"
+      [textField]="'label'"
+      [valueField]="'value'"
+      [valuePrimitive]="props.primitive ?? true"
       [filterable]="props.filterable"
       (filterChange)="handleFilter($event)"
       (valueChange)="props.change && props.change(field, $event)"
     >
-    </kendo-multiselect>
+    </kendo-combobox>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldMultiSelect extends FieldType<FieldTypeConfig> {
-  override defaultOptions = {
-    props: {
-      textField: 'label',
-      valueField: 'value',
-      primitive: true,
-      filterable: false,
-      minFilter: 0,
-      options: <any[]>[],
-    },
-  };
+export class FormlyFieldMultiSelect extends FieldType<FieldTypeConfig<MultiSelectProps>> {
 
   handleFilter(value: any) {
     if (value.length >= this.props.minFilter) {
       this.field.props?.filter(
-        this.props.textField,
+        "label",
         this.props.filterOperator,
         value
       );

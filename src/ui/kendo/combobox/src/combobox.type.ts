@@ -11,12 +11,12 @@ interface ComboboxProps extends FormlyFieldProps, FormlyFieldSelectProps {
   filter: (field: string,operator: string,value: any)=> void;
 }
 
-export interface FormlySelectFieldConfig extends FormlyFieldConfig<ComboboxProps> {
+export interface FormlyComboboxFieldConfig extends FormlyFieldConfig<ComboboxProps> {
   type: 'combobox' | Type<FormlyFieldCombobox>;
 }
 
 @Component({
-  selector: 'formly-field-kendo-select',
+  selector: 'formly-field-kendo-combobox',
   template: `
     <kendo-combobox
       [formControl]="formControl"
