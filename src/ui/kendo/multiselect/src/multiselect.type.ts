@@ -29,7 +29,7 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<MultiSelectPr
       (filterChange)="handleFilter($event)"
       (valueChange)="props.change && props.change(field, $event)"
     >
-    </kendo-combobox>
+    </kendo-multiselect>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

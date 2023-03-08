@@ -3,7 +3,7 @@ import { FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { FieldType, FormlyFieldProps } from '@ngx-formly/kendo/form-field';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
 
-interface ComboboxProps extends FormlyFieldProps, FormlyFieldSelectProps {
+interface ComboBoxProps extends FormlyFieldProps, FormlyFieldSelectProps {
   primitive?: boolean;
   filterable: boolean;
   minFilter: number;
@@ -11,8 +11,8 @@ interface ComboboxProps extends FormlyFieldProps, FormlyFieldSelectProps {
   filter: (field: string,operator: string,value: any)=> void;
 }
 
-export interface FormlyComboboxFieldConfig extends FormlyFieldConfig<ComboboxProps> {
-  type: 'combobox' | Type<FormlyFieldCombobox>;
+export interface FormlyComboBoxFieldConfig extends FormlyFieldConfig<ComboBoxProps> {
+  type: 'combobox' | Type<FormlyFieldComboBox>;
 }
 
 @Component({
@@ -33,7 +33,7 @@ export interface FormlyComboboxFieldConfig extends FormlyFieldConfig<ComboboxPro
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyFieldCombobox extends FieldType<FieldTypeConfig<ComboboxProps>> {
+export class FormlyFieldComboBox extends FieldType<FieldTypeConfig<ComboBoxProps>> {
 
   handleFilter(value: any) {
     if (value.length >= this.props.minFilter) {
