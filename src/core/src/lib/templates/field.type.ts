@@ -1,6 +1,7 @@
-import { Input, Directive } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '../models';
+import { Input, Directive, QueryList, ViewChildren } from '@angular/core';
+import { FormControl, NgControl, FormGroup } from '@angular/forms';
+import { FormlyFieldConfig, FormlyFieldConfigCache } from '../models';
+import { FieldWrapper } from './field.wrapper';
 
 export interface FieldTypeConfig<T = FormlyFieldConfig['props']> extends FormlyFieldConfig<T> {
   formControl: FormControl;
@@ -14,7 +15,15 @@ export interface FieldGroupTypeConfig<T = FormlyFieldConfig['props']> extends Fo
 
 @Directive()
 export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig> {
-  @Input() field: F;
+  @ViewChildren(NgControl) set _formlyControls(controls: QueryList<NgControl>) {
+    const f = this.field as FormlyFieldConfigCache;
+    f._localFields = controls
+      .map((c) => (c.control as FormlyFieldConfigCache['formControl'])._fields || [])
+      .flat()
+      .filter((f: FormlyFieldConfig) => f.formControl !== this.field.formControl);
+  }
+
+  @Input() field: F = {} as F;
   defaultOptions?: Partial<F>;
 
   get model() {
@@ -55,6 +64,6 @@ export abstract class FieldType<F extends FormlyFieldConfig = FormlyFieldConfig>
   }
 
   get formState() {
-    return this.options.formState || {};
+    return this.options?.formState || {};
   }
 }

@@ -2,6 +2,149 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.3.4](https://github.com/ngx-formly/ngx-formly/compare/v6.3.3...v6.3.4) (2024-06-09)
+
+
+### Bug Fixes
+
+* **core:** ensure parser is called on each model update ([#3940](https://github.com/ngx-formly/ngx-formly/issues/3940)) ([3fcdb07](https://github.com/ngx-formly/ngx-formly/commit/3fcdb0706a9857a62561290b8d6a2650e607473d)), closes [#3901](https://github.com/ngx-formly/ngx-formly/issues/3901)
+* **json-schema:** fix type number validation error ([#3938](https://github.com/ngx-formly/ngx-formly/issues/3938)) ([bdd1299](https://github.com/ngx-formly/ngx-formly/commit/bdd1299923a83dc138c62769799cde36e0942543)), closes [#3937](https://github.com/ngx-formly/ngx-formly/issues/3937)
+* **json-schema:** unset required pros to array type ([#3939](https://github.com/ngx-formly/ngx-formly/issues/3939)) ([32d9fb3](https://github.com/ngx-formly/ngx-formly/commit/32d9fb3d4047fc5d5775f851bfefb0c054bf4960)), closes [#3914](https://github.com/ngx-formly/ngx-formly/issues/3914)
+
+### [6.3.3](https://github.com/ngx-formly/ngx-formly/compare/v6.3.2...v6.3.3) (2024-06-02)
+
+
+### Bug Fixes
+
+* **core:** testing for NoopNgZone working in prod builds ([#3929](https://github.com/ngx-formly/ngx-formly/issues/3929)) ([b5f3bb0](https://github.com/ngx-formly/ngx-formly/commit/b5f3bb0913b5a3e25b2a96e03f653c00fb38f98a)), closes [#3928](https://github.com/ngx-formly/ngx-formly/issues/3928)
+* **ionic:** add missing input label for type: 'number' ([#3932](https://github.com/ngx-formly/ngx-formly/issues/3932)) ([6f9528c](https://github.com/ngx-formly/ngx-formly/commit/6f9528c651bc519a602ef07db8623b72e7c40a91)), closes [#3859](https://github.com/ngx-formly/ngx-formly/issues/3859)
+* **json-schema:** fix optional type number validation ([#3933](https://github.com/ngx-formly/ngx-formly/issues/3933)) ([41e20e0](https://github.com/ngx-formly/ngx-formly/commit/41e20e08f03de261d6aa26bfddf7885b77484591)), closes [#3813](https://github.com/ngx-formly/ngx-formly/issues/3813) [#3834](https://github.com/ngx-formly/ngx-formly/issues/3834)
+
+### [6.3.2](https://github.com/ngx-formly/ngx-formly/compare/v6.3.1...v6.3.2) (2024-05-26)
+
+
+### Bug Fixes
+
+* **core:** detect model changes for zoneless change detection ([#3922](https://github.com/ngx-formly/ngx-formly/issues/3922)) ([7db5ae2](https://github.com/ngx-formly/ngx-formly/commit/7db5ae2c91fbef6af42227bdb195dcf5adc6f423)), closes [#3921](https://github.com/ngx-formly/ngx-formly/issues/3921)
+* **core:** ensure defaultValues is set on new nested item added to array ([#3924](https://github.com/ngx-formly/ngx-formly/issues/3924)) ([41e95db](https://github.com/ngx-formly/ngx-formly/commit/41e95db783dd29a65e9a81b61bfc8ac6cf5dd068)), closes [#3891](https://github.com/ngx-formly/ngx-formly/issues/3891)
+* **core:** override initial defaultValue on build ([#3923](https://github.com/ngx-formly/ngx-formly/issues/3923)) ([b5fb32c](https://github.com/ngx-formly/ngx-formly/commit/b5fb32cb0ce09513a4a0bf5d63b62e29ea4f7dd5)), closes [#3916](https://github.com/ngx-formly/ngx-formly/issues/3916)
+* **primeng:** set default value for datepicker numberOfMonths ([#3925](https://github.com/ngx-formly/ngx-formly/issues/3925)) ([40dd9bb](https://github.com/ngx-formly/ngx-formly/commit/40dd9bb9092f71f5ba9e14e9abcff780a8c2da36)), closes [#3897](https://github.com/ngx-formly/ngx-formly/issues/3897)
+
+### [6.3.1](https://github.com/ngx-formly/ngx-formly/compare/v6.3.0...v6.3.1) (2024-05-12)
+
+
+### Bug Fixes
+
+* **json-schema:** ignore resetOnHide for array typ on build ([fc8d6d1](https://github.com/ngx-formly/ngx-formly/commit/fc8d6d1627f611702dffa20322238eb915df3670)), closes [#3910](https://github.com/ngx-formly/ngx-formly/issues/3910)
+* **primeng:** select filtering prop ([#3856](https://github.com/ngx-formly/ngx-formly/issues/3856)) ([67c6783](https://github.com/ngx-formly/ngx-formly/commit/67c6783214136236f772ad1a6da425797275bbba))
+
+## [6.3.0](https://github.com/ngx-formly/ngx-formly/compare/v6.2.2...v6.3.0) (2024-01-28)
+
+
+### Features
+
+* **ionic:** add ionic 7 support ([#3845](https://github.com/ngx-formly/ngx-formly/issues/3845)) ([55512fb](https://github.com/ngx-formly/ngx-formly/commit/55512fbcc916888acbae1d9af8c0b7c8187805d8)), closes [#3643](https://github.com/ngx-formly/ngx-formly/issues/3643)
+
+
+### Bug Fixes
+
+* **core:** handle clone of Uint8Array instance ([0566430](https://github.com/ngx-formly/ngx-formly/commit/056643006075dc4c8b67e51e0e09b4333fecb180)), closes [#3850](https://github.com/ngx-formly/ngx-formly/issues/3850)
+* **json-schema:** handled nested key for uniqueItems ([0f67d89](https://github.com/ngx-formly/ngx-formly/commit/0f67d899f894b82db340b0af3608aff9296eec38)), closes [#3842](https://github.com/ngx-formly/ngx-formly/issues/3842)
+* **json-schema:** pass a valid model value for oneOf in array type ([d597c00](https://github.com/ngx-formly/ngx-formly/commit/d597c0051d4fe6fa6ba0f9685226ab4ba215891d)), closes [#3805](https://github.com/ngx-formly/ngx-formly/issues/3805)
+* **material:** ensure textarea is working with Angular v17 hydration ([e61880e](https://github.com/ngx-formly/ngx-formly/commit/e61880e43f7307d22dd8814e84ed1bd93e6b0664)), closes [#3824](https://github.com/ngx-formly/ngx-formly/issues/3824)
+* **primeng:** add missing appendTo property to select type ([c07e6d6](https://github.com/ngx-formly/ngx-formly/commit/c07e6d67389fc8cec8790b8f9e55f1c8e623e9ca)), closes [#3809](https://github.com/ngx-formly/ngx-formly/issues/3809)
+
+### [6.2.2](https://github.com/ngx-formly/ngx-formly/compare/v6.2.1...v6.2.2) (2023-10-28)
+
+
+### Bug Fixes
+
+* **bootstrap:** update multicheckbox aria attr in input tag ([#3793](https://github.com/ngx-formly/ngx-formly/issues/3793)) ([c78462a](https://github.com/ngx-formly/ngx-formly/commit/c78462ac30cfc4c52b9f6d85bf732bbb76215205))
+* **core:** fix array remove for array of oneOf ([88449e0](https://github.com/ngx-formly/ngx-formly/commit/88449e005f297ea914140c77cbea9f3e710eb15f)), closes [#3794](https://github.com/ngx-formly/ngx-formly/issues/3794)
+
+### Performance Improvements
+
+* **core:** optimize execution time of field expressions ([6acf797](https://github.com/ngx-formly/ngx-formly/commit/6acf797)), closes [#3799](https://github.com/ngx-formly/ngx-formly/issues/3799)
+
+### [6.2.1](https://github.com/ngx-formly/ngx-formly/compare/v6.2.0...v6.2.1) (2023-10-08)
+
+
+### Bug Fixes
+
+* **core:** disable detect local fields inside wrappers ([22b21d8](https://github.com/ngx-formly/ngx-formly/commit/22b21d8ce8487f77b99f37837567eca8cfcae548)), closes [#3572](https://github.com/ngx-formly/ngx-formly/issues/3572)
+
+### Performance Improvements
+
+* **core:** disable update TreeValidity during the build step ([3f65fb4](https://github.com/ngx-formly/ngx-formly/commit/3f65fb482e0d9eb89d573e2d54cc650b1fd9eddf)), closes [#3791](https://github.com/ngx-formly/ngx-formly/issues/3791)
+* **core:** remove detectChanges call in asyn validator ([b0b9a09](https://github.com/ngx-formly/ngx-formly/commit/b0b9a09d3554c554c2e8eb873abd109e04021190)), closes [#3791](https://github.com/ngx-formly/ngx-formly/issues/3791)
+* **core:** set the asyncValidators when async validators are present ([#3792](https://github.com/ngx-formly/ngx-formly/issues/3792)) ([d825cff](https://github.com/ngx-formly/ngx-formly/commit/d825cff8f7b836591c267d1382284b9545e30194)), closes [#3791](https://github.com/ngx-formly/ngx-formly/issues/3791)
+
+## [6.2.0](https://github.com/ngx-formly/ngx-formly/compare/v6.1.8...v6.2.0) (2023-09-28)
+
+
+### Features
+
+* **bootstrap:** added aria tags for input validation ([#3737](https://github.com/ngx-formly/ngx-formly/issues/3737)) ([#3740](https://github.com/ngx-formly/ngx-formly/issues/3740)) ([c4f7074](https://github.com/ngx-formly/ngx-formly/commit/c4f70748d59c2ccc62a3ae7cd1a78880e2f60a30))
+* **json-schema:** add enum validator ([087f35c](https://github.com/ngx-formly/ngx-formly/commit/087f35c4307de19cfc750717e519ed3545d5adb7)), closes [#3723](https://github.com/ngx-formly/ngx-formly/issues/3723) [#3714](https://github.com/ngx-formly/ngx-formly/issues/3714)
+* **kendo:** add primitive option in props ([#3620](https://github.com/ngx-formly/ngx-formly/issues/3620)) ([a0b4d7d](https://github.com/ngx-formly/ngx-formly/commit/a0b4d7de4a1367f790bd30d112c80e50d6b7bef9))
+* **ng-zorro-antd:** description support for ng-zorro-antd ([#3782](https://github.com/ngx-formly/ngx-formly/issues/3782)) ([a4b2d45](https://github.com/ngx-formly/ngx-formly/commit/a4b2d45e30322cfb21dc97f9f162b58cb18d5a5e)), closes [#3639](https://github.com/ngx-formly/ngx-formly/issues/3639)
+
+
+### Bug Fixes
+
+* **core:** add warning when passing invalid type for required prop ([0bf7676](https://github.com/ngx-formly/ngx-formly/commit/0bf7676bed0844b7f5d505dff38540a03e3a25fe)), closes [#3756](https://github.com/ngx-formly/ngx-formly/issues/3756)
+* **core:** update onInit hook type definition ([0b7c553](https://github.com/ngx-formly/ngx-formly/commit/0b7c5533b086aab65eb6992483b370321c2ffc61)), closes [#3722](https://github.com/ngx-formly/ngx-formly/issues/3722)
+* **json-schema:** allow scientific notation in number type ([4d67c3e](https://github.com/ngx-formly/ngx-formly/commit/4d67c3e378d992770bebbac5cc0249ddf9b6f275)), closes [#3757](https://github.com/ngx-formly/ngx-formly/issues/3757)
+* **json-schema:** fix uniqueItems validator for object ([c8b59b3](https://github.com/ngx-formly/ngx-formly/commit/c8b59b36bbcb8a1c9f367355f609d4f8a85026af)), closes [#3764](https://github.com/ngx-formly/ngx-formly/issues/3764)
+* **json-schema:** support dependencies for oneOf with mixed type ([a9d8676](https://github.com/ngx-formly/ngx-formly/commit/a9d86760b5ba2e3dedf7d0a88f6587537a59b115)), closes [#3749](https://github.com/ngx-formly/ngx-formly/issues/3749)
+* **json-schema:** support oneOf with array mixed type ([bcf930b](https://github.com/ngx-formly/ngx-formly/commit/bcf930b8f810b5dcff5607f5b58805186b0298e8)), closes [#3769](https://github.com/ngx-formly/ngx-formly/issues/3769) [#3785](https://github.com/ngx-formly/ngx-formly/issues/3785)
+* **material:** use correct CSS class for form field required marker ([#3763](https://github.com/ngx-formly/ngx-formly/issues/3763)) ([8ac1683](https://github.com/ngx-formly/ngx-formly/commit/8ac1683909f43d56d398f7d4b23d79da7d15c0ce))
+
+### [6.1.8](https://github.com/ngx-formly/ngx-formly/compare/v6.1.7...v6.1.8) (2023-06-12)
+
+
+### Bug Fixes
+
+* **core:** allow createComponent type in testing ([cf22bed](https://github.com/ngx-formly/ngx-formly/commit/cf22bed3b208c6b4ee53b8f291b2703b3334ba28)), closes [#3700](https://github.com/ngx-formly/ngx-formly/issues/3700)
+* **core:** detect changes when field is focused ([9861d6f](https://github.com/ngx-formly/ngx-formly/commit/9861d6ff9863da28a74a4c777f6cbccea464cb0c))
+* **core:** set a default value to FieldType::field property ([817431a](https://github.com/ngx-formly/ngx-formly/commit/817431a6aec311c690d77dc81a8df57095d4dbe8)), closes [#3700](https://github.com/ngx-formly/ngx-formly/issues/3700)
+
+### [6.1.7](https://github.com/ngx-formly/ngx-formly/compare/v6.1.6...v6.1.7) (2023-05-20)
+
+
+### Bug Fixes
+
+* **core:** call register control on fieldArray update ([eff1e61](https://github.com/ngx-formly/ngx-formly/commit/eff1e6124f44b5626457a09c3169916195f261e1)), closes [#3693](https://github.com/ngx-formly/ngx-formly/issues/3693)
+* **core:** detect valueChanges of local field controls ([7c90ae4](https://github.com/ngx-formly/ngx-formly/commit/7c90ae4141a91759dc2b1e664b8c7b0e0467a2b8)), closes [#3455](https://github.com/ngx-formly/ngx-formly/issues/3455) [#3527](https://github.com/ngx-formly/ngx-formly/issues/3527) [#3524](https://github.com/ngx-formly/ngx-formly/issues/3524) [#3549](https://github.com/ngx-formly/ngx-formly/issues/3549) [#1222](https://github.com/ngx-formly/ngx-formly/issues/1222)
+* **material:** add missing name attribute ([7c6ece1](https://github.com/ngx-formly/ngx-formly/commit/7c6ece1ae6a47993edf2cebf0b3b2260fe61a41f)), closes [#3684](https://github.com/ngx-formly/ngx-formly/issues/3684)
+* **material:** update focus state after interacting with checkboxes ([9c5d187](https://github.com/ngx-formly/ngx-formly/commit/9c5d187bee98ee85f5c7237db95fb24513e5b9bd)), closes [#3691](https://github.com/ngx-formly/ngx-formly/issues/3691)
+
+### [6.1.6](https://github.com/ngx-formly/ngx-formly/compare/v6.1.5...v6.1.6) (2023-05-10)
+
+
+### Bug Fixes
+
+* **core:** ensure formState changes on all fields ([db584f8](https://github.com/ngx-formly/ngx-formly/commit/db584f841833d5737fba8f44c3e878835e6ae273)), closes [#3680](https://github.com/ngx-formly/ngx-formly/issues/3680)
+
+### [6.1.5](https://github.com/ngx-formly/ngx-formly/compare/v6.1.4...v6.1.5) (2023-05-06)
+
+
+### Bug Fixes
+
+* **core:** delegate FormArray creation to FieldArrayType only ([7d02313](https://github.com/ngx-formly/ngx-formly/commit/7d023132012b3626a63e3a25b827097e75b9d22b)), closes [#3576](https://github.com/ngx-formly/ngx-formly/issues/3576)
+* **core:** supports nested model assign in expressions ([74b3b69](https://github.com/ngx-formly/ngx-formly/commit/74b3b692b25de07bf453177e3aab8b2b39901fa3)), closes [#3667](https://github.com/ngx-formly/ngx-formly/issues/3667) [#3664](https://github.com/ngx-formly/ngx-formly/issues/3664)
+* **schematics:** add module import to root module ([ea959be](https://github.com/ngx-formly/ngx-formly/commit/ea959be90f4c72cb200e020e0811af2ceff7ca23)), closes [#3638](https://github.com/ngx-formly/ngx-formly/issues/3638)
+
+## [6.1.4](https://github.com/ngx-formly/ngx-formly/compare/v6.1.3...v6.1.4) (2023-05-01)
+
+
+### Bug Fixes
+
+* **core:** ensure disabled prop is working for field without key ([#3665](https://github.com/ngx-formly/ngx-formly/issues/3665)) ([1dd5c6e](https://github.com/ngx-formly/ngx-formly/commit/1dd5c6e52a32553d615427cf340084f60923eb12)), closes [#3657](https://github.com/ngx-formly/ngx-formly/issues/3657)
+* **core:** ensure observe prop is defined before calling defineProperty ([#3666](https://github.com/ngx-formly/ngx-formly/issues/3666)) ([d8cafc8](https://github.com/ngx-formly/ngx-formly/commit/d8cafc853d540ac5600eac2ece20728df9a570ed)), closes [#3631](https://github.com/ngx-formly/ngx-formly/issues/3631)
+* **core:** select options pipe has wrong return types ([0ff64bc](https://github.com/ngx-formly/ngx-formly/commit/0ff64bc6fb2e7548d8afc0829e3992308d0dc072))
+* **material:** add panelClass to mat-select props ([#3634](https://github.com/ngx-formly/ngx-formly/issues/3634)) ([9b28fc0](https://github.com/ngx-formly/ngx-formly/commit/9b28fc0739a46a549513b3c5d828066ccbecc6d8))
+
 ### [6.1.3](https://github.com/ngx-formly/ngx-formly/compare/v6.1.2...v6.1.3) (2023-03-06)
 
 

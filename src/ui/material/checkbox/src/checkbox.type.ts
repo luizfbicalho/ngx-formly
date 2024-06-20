@@ -28,6 +28,7 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
     <mat-checkbox
       [formControl]="formControl"
       [id]="id"
+      [name]="field.name"
       [formlyAttributes]="field"
       [tabIndex]="props.tabindex"
       [indeterminate]="props.indeterminate && formControl.value == null"
@@ -38,7 +39,7 @@ export interface FormlyCheckboxFieldConfig extends FormlyFieldConfig<CheckboxPro
       <span
         *ngIf="props.required && props.hideRequiredMarker !== true"
         aria-hidden="true"
-        class="mat-form-field-required-marker"
+        class="mat-form-field-required-marker mat-mdc-form-field-required-marker"
         >*</span
       >
     </mat-checkbox>
@@ -73,6 +74,8 @@ export class FormlyFieldCheckbox
   ngAfterViewInit() {
     if (this.checkbox) {
       this.focusMonitor.monitor(this.checkbox._inputElement, true).subscribe((focusOrigin) => {
+        this.field.focus = !!focusOrigin;
+        this.stateChanges.next();
         if (focusOrigin) {
           this.props.focus && this.props.focus(this.field);
         } else {

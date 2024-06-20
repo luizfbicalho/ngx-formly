@@ -3,7 +3,10 @@ import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core'
 import { FormlyFieldProps } from '@ngx-formly/primeng/form-field';
 import { FormlyFieldSelectProps } from '@ngx-formly/core/select';
 
-interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {}
+interface SelectProps extends FormlyFieldProps, FormlyFieldSelectProps {
+  appendTo?: any;
+  filter?: boolean;
+}
 
 export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> {
   type: 'select' | Type<FormlyFieldSelect>;
@@ -18,6 +21,8 @@ export interface FormlySelectFieldConfig extends FormlyFieldConfig<SelectProps> 
       [formControl]="formControl"
       [formlyAttributes]="field"
       [showClear]="!props.required"
+      [appendTo]="props.appendTo"
+      [filter]="props.filter"
       (onChange)="props.change && props.change(field, $event)"
     >
     </p-dropdown>

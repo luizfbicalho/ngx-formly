@@ -2,7 +2,7 @@ import { Injectable, Injector, Optional, ViewContainerRef } from '@angular/core'
 import { FormGroup, FormArray, FormGroupDirective } from '@angular/forms';
 import { FormlyConfig } from './formly.config';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyFieldConfigCache } from '../models';
-import { defineHiddenProp, observe, disableTreeValidityCall } from '../utils';
+import { defineHiddenProp, observe, disableTreeValidityCall, isHiddenField } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormlyFormBuilder {
@@ -24,15 +24,25 @@ export class FormlyFormBuilder {
 
     if (!field.parent) {
       this._setOptions(field);
-      disableTreeValidityCall(field.form, () => {
-        this._build(field);
-        const options = (field as FormlyFieldConfigCache).options;
-        options.checkExpressions?.(field, true);
-        options.detectChanges?.(field);
-      });
-    } else {
-      this._build(field);
     }
+
+    disableTreeValidityCall(field.form, () => {
+      this._build(field);
+      // TODO: add test for https://github.com/ngx-formly/ngx-formly/issues/3910
+      if (!field.parent || (field as FormlyFieldConfigCache).fieldArray) {
+        // detect changes early to avoid reset value by hidden fields
+        const options = (field as FormlyFieldConfigCache).options;
+
+        if (field.parent && isHiddenField(field)) {
+          // when hide is used in expression set defaul value will not be set until detect hide changes
+          // which causes default value not set on new item is added
+          options._hiddenFieldsForCheck?.push(field);
+        }
+
+        options.checkExpressions?.(field, true);
+        options._detectChanges?.(field);
+      }
+    });
   }
 
   private _build(field: FormlyFieldConfigCache) {
@@ -78,7 +88,6 @@ export class FormlyFormBuilder {
       defineHiddenProp(options, 'parentForm', this.parentForm);
       observe(options, ['parentForm', 'submitted'], ({ firstChange }) => {
         if (!firstChange) {
-          options.checkExpressions(field);
           options.detectChanges(field);
         }
       });

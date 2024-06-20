@@ -33,7 +33,7 @@ import {
 import { FieldWrapper } from '../templates/field.wrapper';
 import { FieldType } from '../templates/field.type';
 import { isObservable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { FormlyFieldTemplates } from './formly.template';
 
 /**
@@ -161,6 +161,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
   private triggerHook(name: keyof FormlyHookConfig, changes?: SimpleChanges) {
     if (name === 'onInit' || (name === 'onChanges' && changes.field && !changes.field.firstChange)) {
+      this.valueChangesUnsubscribe();
       this.valueChangesUnsubscribe = this.fieldChanges(this.field);
     }
 
@@ -250,6 +251,12 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
 
   private resetRefs(field: FormlyFieldConfigCache) {
     if (field) {
+      if (field._localFields) {
+        field._localFields = [];
+      } else {
+        defineHiddenProp(this.field, '_localFields', []);
+      }
+
       if (field._componentRefs) {
         field._componentRefs = field._componentRefs.filter((ref) => this.componentRefs.indexOf(ref) === -1);
       } else {
@@ -260,16 +267,16 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     this.componentRefs = [];
   }
 
-  private fieldChanges(field: FormlyFieldConfigCache) {
-    this.valueChangesUnsubscribe();
+  private fieldChanges(field: FormlyFieldConfigCache | undefined) {
     if (!field) {
       return () => {};
     }
 
-    const subscribes = [
-      observeDeep(field, ['props'], () => field.options.detectChanges(field)),
-      observeDeep(field.options, ['formState'], () => field.options.detectChanges(field)),
-    ];
+    const subscribes = [observeDeep(field, ['props'], () => field.options.detectChanges(field))];
+
+    if (field.options) {
+      subscribes.push(observeDeep(field.options, ['formState'], () => field.options.detectChanges(field)));
+    }
 
     for (const key of Object.keys(field._expressions || {})) {
       const expressionObserver = observe<FormlyFieldConfigCache['_expressions']['key']>(
@@ -293,7 +300,7 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       });
     }
 
-    for (const path of [['template'], ['fieldGroupClassName'], ['validation', 'show']]) {
+    for (const path of [['focus'], ['template'], ['fieldGroupClassName'], ['validation', 'show']]) {
       const fieldObserver = observe(
         field,
         path,
@@ -305,6 +312,14 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
     if (field.formControl && !field.fieldGroup) {
       const control = field.formControl;
       let valueChanges = control.valueChanges.pipe(
+        map((value) => {
+          field.parsers?.map((parserFn) => (value = (parserFn as any)(value, field)));
+          if (!Object.is(value, field.formControl.value)) {
+            field.formControl.setValue(value);
+          }
+
+          return value;
+        }),
         distinctUntilChanged((x, y) => {
           if (x !== y || Array.isArray(x) || isObject(x)) {
             return false;
@@ -329,12 +344,6 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
           control.patchValue(value, { emitEvent: false, onlySelf: true });
         }
 
-        field.parsers?.forEach((parserFn) => (value = parserFn(value)));
-        if (value !== field.formControl.value) {
-          field.formControl.setValue(value);
-          return;
-        }
-
         if (hasKey(field)) {
           assignFieldValue(field, value);
         }
@@ -344,6 +353,15 @@ export class FormlyField implements DoCheck, OnInit, OnChanges, AfterContentInit
       subscribes.push(() => sub.unsubscribe());
     }
 
-    return () => subscribes.forEach((subscribe) => subscribe());
+    let templateFieldsSubs: (() => void)[] = [];
+    observe(field, ['_localFields'], ({ currentValue }) => {
+      templateFieldsSubs.forEach((unsubscribe) => unsubscribe());
+      templateFieldsSubs = (currentValue || []).map((f: FormlyFieldConfigCache) => this.fieldChanges(f));
+    });
+
+    return () => {
+      subscribes.forEach((unsubscribe) => unsubscribe());
+      templateFieldsSubs.forEach((unsubscribe) => unsubscribe());
+    };
   }
 }

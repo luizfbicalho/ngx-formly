@@ -2,7 +2,7 @@ import { FormlyJsonschema } from './formly-json-schema.service';
 import { JSONSchema7 } from 'json-schema';
 import { FormlyFieldConfig, FormlyFieldProps, FieldArrayType } from '@ngx-formly/core';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
-import { createComponent, FormlyInputModule } from '@ngx-formly/core/testing';
+import { createComponent, FormlyInputModule, ɵCustomEvent } from '@ngx-formly/core/testing';
 import { Component } from '@angular/core';
 
 const renderComponent = ({ schema, model }: { schema: JSONSchema7; model?: any }) => {
@@ -424,7 +424,14 @@ describe('Service: FormlyJsonschema', () => {
         expect(uniqueItemsValidator(undefined)).toBeTrue();
         expect(uniqueItemsValidator([1, 2, 3])).toBeTrue();
         expect(uniqueItemsValidator([1, 2, 2])).toBeFalse();
+        expect(
+          uniqueItemsValidator([
+            { a: 2, b: 1 },
+            { b: 1, a: 2 },
+          ]),
+        ).toBeFalse();
 
+        expect(uniqueItemsValidator([{ foo: { a: 2, b: 1 } }, { foo: { b: 1, a: 2 } }])).toBeFalse();
         expect(uniqueItemsValidator([{ a: 2 }, { a: 1 }])).toBeTrue();
         expect(uniqueItemsValidator([{ a: 1 }, { a: 1 }])).toBeFalse();
       });
@@ -797,6 +804,20 @@ describe('Service: FormlyJsonschema', () => {
             expect(props.multiple).toBeTrue();
           });
         });
+
+        it('should add enum validator', () => {
+          const schema: JSONSchema7 = {
+            type: 'integer',
+            enum: [1, 2, 3],
+          };
+          const config = formlyJsonschema.toFieldConfig(schema);
+
+          const enumValidators = config.validators.enum;
+          expect(enumValidators).toBeDefined();
+          expect(enumValidators(new FormControl(4))).toBeFalse();
+          expect(enumValidators(new FormControl(5))).toBeFalse();
+          expect(enumValidators(new FormControl(1))).toBeTrue();
+        });
       });
 
       it('should support const as hidden', () => {
@@ -960,8 +981,8 @@ describe('Service: FormlyJsonschema', () => {
         const expectedConfig: FormlyFieldConfig = {
           type: 'array',
           defaultValue: undefined,
-          props: { ...emmptyFieldProps, required: true },
-          templateOptions: { ...emmptyFieldProps, required: true },
+          props: { ...emmptyFieldProps },
+          templateOptions: { ...emmptyFieldProps },
           fieldArray: expect.any(Function),
           validators: expectTypeValidator(['array']),
         };
@@ -1266,6 +1287,57 @@ describe('Service: FormlyJsonschema', () => {
               items: {
                 type: 'object',
                 oneOf: [{ properties: { foo: { const: 1 } } }, { properties: { foo: { const: 2 } } }],
+              },
+            },
+          });
+
+          const [
+            ,
+            {
+              fieldGroup: [foo1Field, foo2Field],
+            },
+          ] = field.fieldGroup[0].fieldGroup[0].fieldGroup;
+
+          expect(foo1Field.hide).toBeTrue();
+          expect(foo2Field.hide).toBeFalse();
+        });
+
+        // https://github.com/ngx-formly/ngx-formly/issues/3805
+        it('should support oneOf within array (validate the second item)', () => {
+          const { field } = renderComponent({
+            model: ['n', 'Heading 2'],
+            schema: {
+              type: 'array',
+              items: {
+                oneOf: [{ enum: ['Heading 1', 'Heading 2'] }, { type: 'string' }],
+              },
+            },
+          });
+
+          const [
+            ,
+            {
+              fieldGroup: [field1, field2],
+            },
+          ] = field.fieldGroup[1].fieldGroup[0].fieldGroup;
+
+          expect(field1.hide).toBeFalse();
+          expect(field2.hide).toBeTrue();
+        });
+
+        it('should support oneOf with array mixed type', () => {
+          const { field, setInputs } = renderComponent({
+            model: [{ foo: [2] }],
+            schema: {
+              type: 'array',
+              items: {
+                oneOf: [
+                  { type: 'string' },
+                  {
+                    type: 'array',
+                    items: { type: 'string' },
+                  },
+                ],
               },
             },
           });
@@ -1925,6 +1997,54 @@ describe('Service: FormlyJsonschema', () => {
       });
 
       expect(field).toBeDefined();
+    });
+  });
+
+  describe('FormlyJsonSchemaOptions map data', () => {
+    it('should set undefined when number type input is empty', () => {
+      const { field, query } = renderComponent({
+        schema: { type: 'integer' },
+      });
+
+      query('input').triggerEventHandler('input', ɵCustomEvent({ value: 'eeee' }));
+      expect(field.formControl.value).toEqual('eeee');
+
+      query('input').triggerEventHandler('input', ɵCustomEvent({ value: '' }));
+      expect(field.formControl.value).toEqual(undefined);
+
+      query('input').triggerEventHandler('input', ɵCustomEvent({ value: '2e3' }));
+      expect(field.formControl.value).toEqual(2000);
+    });
+
+    it('should set non required string to undefined when is empty', () => {
+      const { field } = renderComponent({
+        schema: { type: 'string' },
+      });
+
+      const parser = field.parsers[0] as any;
+
+      expect(parser('', field)).toEqual(undefined);
+      field.props.required = true;
+      expect(parser('', field)).toEqual('');
+    });
+    it('should set non required string to undefined when is empty', () => {
+      const { field } = renderComponent({
+        schema: { type: 'string' },
+      });
+
+      const parser = field.parsers[0] as any;
+
+      expect(parser('', field)).toEqual(undefined);
+      field.props.required = true;
+      expect(parser('', field)).toEqual('');
+    });
+
+    it('should set required string when minLength is set', () => {
+      const { field } = renderComponent({
+        schema: { type: 'string', minLength: 1 },
+      });
+
+      expect(field.props.required).toBeTrue();
     });
   });
 });

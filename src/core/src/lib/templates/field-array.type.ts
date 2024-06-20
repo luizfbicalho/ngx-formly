@@ -16,7 +16,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
   implements FormlyExtension<F>
 {
   onPopulate(field: F) {
-    if (!field.formControl && hasKey(field)) {
+    if (hasKey(field)) {
       const control = findControl(field);
       registerControl(field, control ? control : new FormArray([], { updateOn: field.modelOptions.updateOn }));
     }
@@ -32,10 +32,11 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
     }
 
     for (let i = field.fieldGroup.length; i < length; i++) {
-      const f = {
-        ...clone(typeof field.fieldArray === 'function' ? field.fieldArray(field) : field.fieldArray),
-        key: `${i}`,
-      };
+      const f = { ...clone(typeof field.fieldArray === 'function' ? field.fieldArray(field) : field.fieldArray) };
+      if (f.key !== null) {
+        f.key = `${i}`;
+      }
+
       field.fieldGroup.push(f);
     }
   }
@@ -56,7 +57,7 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
 
     const field = this.field.fieldGroup[i];
     this.field.fieldGroup.splice(i, 1);
-    this.field.fieldGroup.forEach((f, key) => (f.key = `${key}`));
+    this.field.fieldGroup.forEach((f, key) => this.updateArrayElementKey(f, `${key}`));
     unregisterControl(field, true);
     this._build();
     markAsDirty && this.formControl.markAsDirty();
@@ -64,11 +65,26 @@ export abstract class FieldArrayType<F extends FormlyFieldConfig = FieldArrayTyp
 
   private _build() {
     const fields = (this.field as FormlyFieldConfigCache).formControl._fields ?? [this.field];
-    fields.forEach((f) => this.options.build(f));
+    fields.forEach((f) => (this.options as any).build(f));
     this.options.fieldChanges.next({
       field: this.field,
       value: getFieldValue(this.field),
       type: 'valueChanges',
     });
+  }
+
+  private updateArrayElementKey(f: FormlyFieldConfig, newKey: string) {
+    if (hasKey(f)) {
+      f.key = newKey;
+      return;
+    }
+
+    if (!f.fieldGroup?.length) {
+      return;
+    }
+
+    for (let i = 0; i < f.fieldGroup.length; i++) {
+      this.updateArrayElementKey(f.fieldGroup[i], newKey);
+    }
   }
 }
